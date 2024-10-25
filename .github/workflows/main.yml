@@ -1,0 +1,23 @@
+name: Build and Deploy
+on:
+  push:
+    branches: [ main ]  # 监听到main分支push操作时触发运行
+permissions:
+  contents: write
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest   # 运行所需要的虚拟机环境
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4     
+ 
+      - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
+        run: |
+          npm ci
+          npm run build
+ 
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4   # 引用别人写好的发布库
+        with:
+          branches: gh-pages   # github pages分支
+          folder: dist # The folder the action should deploy.
